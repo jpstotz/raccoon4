@@ -50,6 +50,7 @@ class Identity {
 	private String lastName;
 	private String email;
 	private String services;
+	private String loginAuthToken;
 	private String authToken;
 
 	private Identity() {
@@ -99,6 +100,17 @@ class Identity {
 	}
 
 	/**
+	 * Get the long term token that is created by username/password authentication.
+	 *
+	 * This token can be used to request session token(s).
+	 *
+	 * @return
+	 */
+	public String getLoginAuthToken() {
+		return loginAuthToken;
+	}
+
+	/**
 	 * Get the session cookie
 	 * 
 	 * @return a token that can be used for getting access.
@@ -113,7 +125,6 @@ class Identity {
 	 * @param req
 	 *          parameter object with username, password and locale.
 	 * @return new instance
-	 * @throws BadAuthenticationException
 	 * @throws ClientProtocolException
 	 * @throws HttpResponseException
 	 * @throws IOException
@@ -122,8 +133,6 @@ class Identity {
 			throws ClientProtocolException,
 			HttpResponseException, IOException {
 
-		
-		
 		Locale loc = Locale.getDefault();
 		String epwd = null;
 		try {
@@ -155,8 +164,12 @@ class Identity {
 		ret.lastName = map.get("lastName");
 		ret.email = map.get("Email");
 		ret.services = map.get("services");
-		ret.authToken = map.get("Auth");
+		ret.loginAuthToken = map.get("Auth");
 		String tok = map.get("Token");
+
+		if (tok == null || tok.length() == 0) {
+			throw new ClientProtocolException("Token missing in initial login response");
+		}
 
 		if (tok != null && tok.length() > 0) {
 			// Since mid Oct/2017, "Token" must be sent back if account details
