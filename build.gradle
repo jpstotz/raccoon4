@@ -12,6 +12,7 @@ plugins {
     id "java"
     id "eclipse"
     id "edu.sc.seis.launch4j" version "2.4.9"
+    id 'maven-publish'
 }
 
 // Settings
@@ -26,8 +27,25 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
 }
-
-
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+task simpleJar(type: Jar) {
+    manifest {
+        // version can be changed via 'gradle.properties' file
+        attributes 'Implementation-Version': archiveVersion, 'Main-Class': 'de.onyxbits.raccoon.Main'
+    }
+    into("META-INF/maven/$project.group/$project.name") {
+        from { generatePomFileForMavenJavaPublication }
+        rename ".*", "pom.xml"
+    }
+    archiveClassifier = 'lib'
+    with jar
+}
 task fatJar(type: Jar) {
     manifest {
       // version can be changed via 'gradle.properties' file
@@ -48,6 +66,7 @@ createExe {
   jar = "lib/${project.tasks.fatJar.archiveName}"
   icon= '../../icon.ico'
   jreMinVersion ='1.7.0'
+  bundledJrePath = '%JAVA_HOME%'
 }
 
 // In this section you declare the dependencies for your production and test code
