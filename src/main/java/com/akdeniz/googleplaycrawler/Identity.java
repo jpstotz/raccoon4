@@ -40,7 +40,7 @@ import com.akdeniz.googleplaycrawler.misc.Base64;
  * @author patrick
  * 
  */
-class Identity {
+public class Identity {
 
 	private static final String LOGIN_URL = "https://android.clients.google.com/auth";
 	private static final String PUBKEY = "AAAAgMom/1a/v0lblO2Ubrt60J2gcuXSljGFQXgcyZWveWLEwo6prwgi3iJIZdodyhKZQrNWp5nKJ3srRXcUW+F1BD3baEVGcmEgqaLZUNBjm057pKRI16kB0YppeGx5qIQ5QjKzsR8ETQbKLNWgRY0QRNVz34kMJR3P/LgHax/6rmf5AAAAAwEAAQ==";
