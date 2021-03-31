@@ -18,6 +18,9 @@ repositories {
 publishing {
     publications {
         mavenJava(MavenPublication) {
+            groupId = 'raccoon.onyxbits.de'
+            artifactId = 'raccoon4-lib'
+
             from components.java
         }
     }
